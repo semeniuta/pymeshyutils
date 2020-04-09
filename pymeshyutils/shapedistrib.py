@@ -3,9 +3,9 @@ from matplotlib import pyplot as plt
 import pymeshy
 
 
-def hist(x, n_bins, max_val, normalize=False):
-    
-    counts, bin_edges = np.histogram(x, bins=n_bins, range=(0, max_val))
+def hist(x, n_bins, min_val, max_val, normalize=False):
+
+    counts, bin_edges = np.histogram(x, bins=n_bins, range=(min_val, max_val))
 
     if normalize:
         counts = counts / len(x)
