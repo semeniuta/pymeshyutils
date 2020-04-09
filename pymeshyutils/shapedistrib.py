@@ -26,6 +26,10 @@ def hist_abs_diff(hist1, hist2):
     return np.sum(np.abs(hist1 - hist2))
 
 
+def hist_diff_std(hist1, hist2):
+    return (hist1 - hist2).std()
+
+
 def several_scalings(facets, scaling_factors, direction=0, n_samples=100000):
 
     def gen(facets):
