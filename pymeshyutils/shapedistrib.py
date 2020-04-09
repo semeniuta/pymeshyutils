@@ -1,6 +1,8 @@
 import numpy as np
+import pandas as pd
 from matplotlib import pyplot as plt
 import pymeshy
+from .geometry import triangle_sides_distances, triangle_angles_cos, triangle_area
 
 
 def hist(x, n_bins, min_val, max_val, normalize=False):
@@ -71,4 +73,31 @@ def cumulative_areas_hist_differences(counts_matrix):
 
     return cumulative_areas
         
+
+def measurements_from_3points(points_all):
+
+    measurements = np.zeros((len(points_all), 7), dtype=np.float64)
+
+    for i, points in enumerate(points_all):
+
+        d_unsorted = triangle_sides_distances(points)
+
+        indices_order = sorted(range(3), key=lambda i: d_unsorted[i])
+
+        points_new_order = [points[idx] for idx in indices_order]
+        d1, d2, d3 = [d_unsorted[idx] for idx in indices_order]
+
+        theta_1, theta_2, theta_3 = triangle_angles_cos(points_new_order)
+        area = triangle_area(points)
+
+        measurements[i, :] = area, theta_1, theta_2, theta_3, d1, d2, d2
+
+    return pd.DataFrame(measurements, columns=['area', 'theta_1', 'theta_2', 'theta_3', 'd1', 'd2', 'd3'])
         
+
+def sample_measurements_from_3points(mesh, n_samples, random_state=-1):
+
+    points = np.array(pymeshy.generate_random_points_for_facets(mesh, n_samples, 3, random_state=random_state))
+    meas_df = measurements_from_3points(points)
+
+    return meas_df
