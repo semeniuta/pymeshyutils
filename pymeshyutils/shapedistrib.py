@@ -20,6 +20,10 @@ def compute_bin_centers(bin_edges):
     return [0.5*(bin_edges[i] + bin_edges[i+1]) for i in range(n)]
 
 
+def hist_abs_diff(hist1, hist2):
+    return np.sum(np.abs(hist1 - hist2))
+
+
 def several_scalings(facets, scaling_factors, direction=0, n_samples=100000):
 
     def gen(facets):
