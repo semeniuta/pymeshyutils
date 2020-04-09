@@ -94,10 +94,26 @@ def measurements_from_3points(points_all):
         theta_1, theta_2, theta_3 = triangle_angles_cos(points_new_order)
         area = triangle_area(points)
 
-        measurements[i, :] = area, theta_1, theta_2, theta_3, d1, d2, d2
+        measurements[i, :] = area, theta_1, theta_2, theta_3, d1, d2, d3
 
     return pd.DataFrame(measurements, columns=['area', 'theta_1', 'theta_2', 'theta_3', 'd1', 'd2', 'd3'])
-        
+
+
+def three_points_measurements_from_mesh(mesh, n_samples, random_state):
+
+    tpm = pymeshy.generate_three_points_samples_for_facets(mesh, n_samples, random_state)
+
+    d = dict()
+    d['area'] = np.array(tpm.area)
+    d['theta_1'] = np.array(tpm.theta_1)
+    d['theta_2'] = np.array(tpm.theta_2)
+    d['theta_3'] = np.array(tpm.theta_3)
+    d['d1'] = np.array(tpm.d1)
+    d['d2'] = np.array(tpm.d2)
+    d['d3'] = np.array(tpm.d3)
+
+    return pd.DataFrame(d)
+
 
 def sample_measurements_from_3points(mesh, n_samples, random_state=-1):
 
